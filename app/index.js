@@ -47,6 +47,28 @@ app.post("/api/students", (req, res) => {
   }
 });
 
+app.put("/api/students/:id/grades", (req, res) => {
+  // Id of the student to update
+  const { id } = req.params;
+
+  const student2Update = STUDENTS.find((student) => student.id === Number(id));
+
+  if (student2Update) {
+    // * This is a spread operator
+    // We will mix in the grades property with an empty array
+    student2Update.grades.push(req.body);
+
+    // No persistence - but send back the updated temporary STUDENTS
+    res.json(student2Update);
+  } else {
+    res.status(404).json({ message: "Student not found" });
+  }
+});
+
+app.delete("/api/students/:id", (req, res) => {
+  res.json(STUDENTS.filter((student) => student.id !== Number(req.params.id)));
+});
+
 app.listen(3000, () => {
   console.info("Server is running on port 3000");
 });
