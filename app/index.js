@@ -11,7 +11,6 @@ app.get("/api/students/attendance", (_, res) => {
   res.json(STUDENTS.map((student) => student.name));
 });
 
-// ! RECORDING
 app.get("/api/students/:id", (req, res) => {
   // * This is a string
   const { id } = req.params;
@@ -22,6 +21,29 @@ app.get("/api/students/:id", (req, res) => {
     res.json(student);
   } else {
     res.status(404).json({ message: "Student not found" });
+  }
+});
+
+// * This is a middleware
+// Tell express to parse the request body as JSON
+// Without this, req.body will be undefined
+app.use(express.json());
+
+app.post("/api/students", (req, res) => {
+  const newStudent = req.body;
+
+  if (newStudent.name) {
+    // Avoid push - this is for demo purposes only
+    STUDENTS.push(
+      // * This is a spread operator
+      // We will mix in the grades property with an empty array
+      { ...newStudent, grades: [] }
+    );
+
+    // No persistence - but send back the updated temporary STUDENTS
+    res.json(STUDENTS);
+  } else {
+    res.status(400).json({ message: "Student name is required" });
   }
 });
 
