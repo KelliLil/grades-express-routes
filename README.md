@@ -25,7 +25,7 @@ Example: `[{name: "Mark West"}, {name: "John Doe"}]`, etc.
 
 - Creates a new student (empty grades array)
 
-### POST /api/students/:id/grade
+### PUT /api/students/:id/grade
 
 - Creates a new grade for a student
 
@@ -33,5 +33,4 @@ Example: `[{name: "Mark West"}, {name: "John Doe"}]`, etc.
 
 - Add a `DELETE` route to delete a student
 - Add a `DELETE` route to delete a grade
-- Add a `PUT` route to update a student
 - Add a `PUT` route to update a grade
