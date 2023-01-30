@@ -25,6 +25,20 @@ const controller = {
     return Student.create(student);
   },
 
+  async createGradeForStudentById(id, grade) {
+    // Find the student by id
+    // 'this' refers to the controller object
+    const foundStudent = await this.getStudentById(id);
+
+    // If the student is found, add the grade to the student's grades array
+    if (foundStudent) {
+      foundStudent.grades.push(grade);
+
+      // Trigger the save middleware (validate, etc.)
+      return foundStudent.save();
+    }
+  },
+
   // updatedName is an object with a name property from the request body
   updateStudentNameById(id, updatedName) {
     return Student.findByIdAndUpdate(
@@ -42,12 +56,18 @@ const controller = {
 };
 
 const updatedStudent = await controller
-  .updateStudentNameById("63d81d16a92c37c6ea49b75b", {
-    name: "John Raw Result Doe",
+  .createGradeForStudentById("63d81d16a92c37c6ea49b75b", {
+    gradeType: "quiz",
+    name: "Test Quiz",
+    earned: 100,
+    possible: 100,
   })
   .catch((err) => {
-    console.error(err);
-    console.error(err.message);
+    if (err.name === "ValidationError") {
+      console.error(err.message);
+    }
+
+    // console.error(err);
   });
 
 console.log(updatedStudent);

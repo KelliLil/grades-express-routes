@@ -32,7 +32,7 @@ const StudentSchema = new Schema(
 // Validation to prevent duplicate grade names
 // Child schema validation must be done in the parent schema
 StudentSchema.path("grades").validate((grades) => {
-  const gradeNames = grades.map((grade) => grade.name.toLowerCase());
+  const gradeNames = grades.map((grade) => grade.name?.toLowerCase());
 
   // If the number of unique grade names is less than the number of grades, then there are duplicates
   return new Set(gradeNames).size === gradeNames.length;
