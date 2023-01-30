@@ -1,10 +1,18 @@
 import { Schema, model } from "mongoose";
+import GradeSchema from "./grade-schema.js";
 
-// TODO: Create a schema for grades (https://github.com/manavm1990/node-mongo-mongoose-sample/blob/main/app/grade/Grade.js)
-// TODO: Add SOME validation to the schema
-export default model(
-  "Student",
-  new Schema({
-    name: String,
-  })
-);
+const StudentSchema = new Schema({
+  name: { type: String, required: [true, "Student name is required"] },
+  minLength: [3, "Student name must be at least 3 characters long"],
+  trim: true,
+  validate: {
+    validator(name) {
+      // Only allow letters and spaces (one space in between words)
+      return /[a-zA-Z]+([\s][a-zA-Z]+)*/.test(name);
+    },
+    message:
+      "Student name must only contain letters and only one space in between names",
+  },
+});
+
+export default model("Student", StudentSchema);
