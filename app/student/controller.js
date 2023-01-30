@@ -12,14 +12,18 @@ mongoose
     console.error("Error connecting to the database", err);
   });
 
-export const controller = {
+const controller = {
   getStudents() {
     return Student.find();
   },
 
-  // TODO: Set up the corresponding route in app/student/routes.js 👇🏾
+  getStudentById(id) {
+    return Student.findById(id);
+  },
 
-  // TODO: Add method to get a single student by id
+  createStudent(student) {
+    return Student.create(student);
+  },
 
   // TODO: Add method to create a new student (scores can be empty)
 
@@ -32,4 +36,12 @@ export const controller = {
   // TODO: Add method to delete a single student by id
 };
 
+const createdStudent = await controller
+  .getStudentById("63d81d16a92c37c6ea49b75b")
+  .catch((err) => {
+    console.error(err);
+    console.error(err.message);
+  });
+
+console.log(createdStudent);
 export default controller;
