@@ -25,9 +25,14 @@ const controller = {
     return Student.create(student);
   },
 
-  // TODO: Add method to create a new student (scores can be empty)
-
-  // TODO: Add method to update a single student's name by id
+  // updatedName is an object with a name property from the request body
+  updateStudentNameById(id, updatedName) {
+    return Student.findByIdAndUpdate(
+      id,
+      { name: updatedName.name },
+      { rawResult: true }
+    );
+  },
 
   // TODO: Add method to update a single score by student id and score id
 
@@ -36,12 +41,14 @@ const controller = {
   // TODO: Add method to delete a single student by id
 };
 
-const createdStudent = await controller
-  .getStudentById("63d81d16a92c37c6ea49b75b")
+const updatedStudent = await controller
+  .updateStudentNameById("63d81d16a92c37c6ea49b75b", {
+    name: "John Raw Result Doe",
+  })
   .catch((err) => {
     console.error(err);
     console.error(err.message);
   });
 
-console.log(createdStudent);
+console.log(updatedStudent);
 export default controller;
