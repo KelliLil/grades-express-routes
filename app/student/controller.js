@@ -82,21 +82,24 @@ const controller = {
     }
   },
 
+  updateGradeName(originalGradeName, updatedGradeName) {
+    return Student.updateMany(
+      { "grades.name": originalGradeName },
+      { $set: { "grades.$.name": updatedGradeName } },
+      { multi: true }
+    );
+  },
+
   // TODO: Add method to delete a single score by student id and score id
 
   // TODO: Add method to delete a single student by id
 };
 
-const updatedStudent = await controller
-  .updateStudentScoreByGradeName("63d81d16a92c37c6ea49b75b", {
-    gradeType: "quiz",
-    name: "Test Quiz",
-    earned: 90,
-    possible: 100,
-  })
+const gradeNameUpdateResults = await controller
+  .updateGradeName("Quiz 1", "Quiz 1 - Updated")
   .catch((err) => {
-    console.error(err.message);
+    console.error(err);
   });
 
-console.log(updatedStudent);
+console.log(gradeNameUpdateResults);
 export default controller;
