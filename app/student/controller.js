@@ -27,49 +27,51 @@ const controller = {
   },
 
   async createGradeForStudentById(id, grade) {
-      // Find the student by id
-      // 'this' refers to the controller object
-      const foundStudent = await this.getStudentById(id);
+    // Find the student by id
+    // 'this' refers to the controller object
+    const foundStudent = await this.getStudentById(id);
 
-      // If the student is found, add the grade to the student's grades array
-      if (foundStudent) {
-        foundStudent.grades.push(grade);
+    // If the student is found, add the grade to the student's grades array
+    if (foundStudent) {
+      foundStudent.grades.push(grade);
+
+      // Trigger the save middleware (validate, etc.)
+      return foundStudent.save();
+    }
+
+    throw new Error("Student not found");
+  },
+
+  updateStudentNameById(id, updatedName) {
+    return Student.findByIdAndUpdate(
+      id,
+      { name: updatedName.name },
+      { rawResult: true }
+    );
+  },
+
+  async updateStudentScoreByGradeName(studentId, updatedGrade) {
+    // Find the student by id
+    // 'this' refers to the controller object
+    const foundStudent = await this.getStudentById(studentId);
+
+    // If the student is found, update the grade
+    if (foundStudent) {
+      const grade2Update = foundStudent.grades.find(
+        (grade) => grade.name === updatedGrade.name
+      );
+
+      if (grade2Update) {
+        grade2Update.earned = updatedGrade.earned;
 
         // Trigger the save middleware (validate, etc.)
         return foundStudent.save();
       }
-  },
 
-  updateStudentNameById(id, updatedName) {
-      return Student.findByIdAndUpdate(
-        id,
-        { name: updatedName.name },
-        { rawResult: true }
-      );
-  },
-
-  async updateStudentScoreByGradeName(studentId, updatedGrade) {
-      // Find the student by id
-      // 'this' refers to the controller object
-      const foundStudent = await this.getStudentById(studentId);
-
-      // If the student is found, update the grade
-      if (foundStudent) {
-        const grade2Update = foundStudent.grades.find(
-          (grade) => grade.name === updatedGrade.name
-        );
-
-        if (grade2Update) {
-          grade2Update.earned = updatedGrade.earned;
-
-          // Trigger the save middleware (validate, etc.)
-          return foundStudent.save();
-        }
-
-        throw new Error("Grade not found. Did you enter the correct name?");
-      } else {
-        throw new Error("Student not found");
-      }
+      throw new Error("Grade not found. Did you enter the correct name?");
+    } else {
+      throw new Error("Student not found");
+    }
   },
 
   updateGradeName(originalGradeName, updatedGradeName) {
@@ -82,7 +84,7 @@ const controller = {
 
   updateGradeWithCurve(originalGradeName, curve) {
     // This will return a promise that resolves to the number of documents updated
-    // TODO: Use this info ℹ️ in the router to send a response regarding the status of the update
+
     return Student.updateMany(
       { "grades.name": originalGradeName },
       { $inc: { "grades.$.earned": curve } },
