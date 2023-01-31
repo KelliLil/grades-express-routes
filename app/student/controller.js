@@ -90,16 +90,24 @@ const controller = {
     );
   },
 
-  // TODO: Add method to delete a single score by student id and score id
+  updateGradeWithCurve(originalGradeName, curve) {
+    // This will return a promise that resolves to the number of documents updated
+    // TODO: Use this info ℹ️ in the router to send a response regarding the status of the update
+    return Student.updateMany(
+      { "grades.name": originalGradeName },
+      { $inc: { "grades.$.earned": curve } },
+      { multi: true }
+    );
+  },
 
   // TODO: Add method to delete a single student by id
 };
 
-const gradeNameUpdateResults = await controller
-  .updateGradeName("Quiz 1", "Quiz 1 - Updated")
+const curvedGrades = await controller
+  .updateGradeWithCurve("Quiz 1 - Updated", 10)
   .catch((err) => {
     console.error(err);
   });
 
-console.log(gradeNameUpdateResults);
+console.log(curvedGrades);
 export default controller;
