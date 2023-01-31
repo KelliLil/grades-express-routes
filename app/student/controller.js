@@ -21,6 +21,7 @@ const controller = {
     return Student.findById(id);
   },
 
+  // `student` is expected to validate against the Student schema
   createStudent(student) {
     return Student.create(student);
   },
@@ -39,7 +40,6 @@ const controller = {
       }
   },
 
-  // updatedName is an object with a name property from the request body
   updateStudentNameById(id, updatedName) {
       return Student.findByIdAndUpdate(
         id,
