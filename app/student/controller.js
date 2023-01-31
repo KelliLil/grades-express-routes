@@ -26,7 +26,6 @@ const controller = {
   },
 
   async createGradeForStudentById(id, grade) {
-    if (mongoose.Types.ObjectId.isValid(id)) {
       // Find the student by id
       // 'this' refers to the controller object
       const foundStudent = await this.getStudentById(id);
@@ -38,24 +37,18 @@ const controller = {
         // Trigger the save middleware (validate, etc.)
         return foundStudent.save();
       }
-    } else {
-      throw new Error("Invalid student id");
-    }
   },
 
   // updatedName is an object with a name property from the request body
   updateStudentNameById(id, updatedName) {
-    if (mongoose.Types.ObjectId.isValid(id)) {
       return Student.findByIdAndUpdate(
         id,
         { name: updatedName.name },
         { rawResult: true }
       );
-    }
   },
 
   async updateStudentScoreByGradeName(studentId, updatedGrade) {
-    if (mongoose.Types.ObjectId.isValid(studentId)) {
       // Find the student by id
       // 'this' refers to the controller object
       const foundStudent = await this.getStudentById(studentId);
@@ -77,9 +70,6 @@ const controller = {
       } else {
         throw new Error("Student not found");
       }
-    } else {
-      throw new Error("Invalid student id");
-    }
   },
 
   updateGradeName(originalGradeName, updatedGradeName) {
@@ -105,11 +95,14 @@ const controller = {
   },
 };
 
-const curvedGrades = await controller
-  .updateGradeWithCurve("Quiz 1 - Updated", 10)
+const avgGrade = await controller
+  .getAvgScoreByStudentId("63d83ad635828620f631a7f")
   .catch((err) => {
-    console.error(err);
+    if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
+      console.log("Invalid id");
+    }
   });
 
-console.log(curvedGrades);
+console.log(avgGrade);
+
 export default controller;
