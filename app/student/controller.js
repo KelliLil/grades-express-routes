@@ -100,7 +100,9 @@ const controller = {
     );
   },
 
-  // TODO: Add method to delete a single student by id
+  deleteStudentById(id) {
+    return Student.findByIdAndDelete(id);
+  },
 };
 
 const curvedGrades = await controller
