@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import gradeSchema from "./grade-schema.js";
 
-const StudentSchema = new Schema(
+const studentSchema = new Schema(
   {
     name: {
       type: String,
@@ -31,11 +31,11 @@ const StudentSchema = new Schema(
 
 // Validation to prevent duplicate grade names
 // Child schema validation must be done in the parent schema
-StudentSchema.path("grades").validate((grades) => {
+studentSchema.path("grades").validate((grades) => {
   const gradeNames = grades.map((grade) => grade.name?.toLowerCase());
 
   // If the number of unique grade names is less than the number of grades, then there are duplicates
   return new Set(gradeNames).size === gradeNames.length;
 }, "Grade names must be unique");
 
-export default model("Student", StudentSchema);
+export default model("Student", studentSchema);
