@@ -83,8 +83,6 @@ const controller = {
   },
 
   updateGradeWithCurve(originalGradeName, curve) {
-    // This will return a promise that resolves to the number of documents updated
-
     return Student.updateMany(
       { "grades.name": originalGradeName },
       { $inc: { "grades.$.earned": curve } },
