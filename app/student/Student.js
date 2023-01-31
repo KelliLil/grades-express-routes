@@ -44,7 +44,8 @@ const studentSchema = new Schema(
         // Destructure the accumulated scores
         const [earned, possible] = accumulatedScores;
 
-        return ((earned / possible) * 100).toFixed(1);
+        // Get the percentage, rounded to one decimal place and turn it BACK INTO A NUMBER
+        return Number.parseFloat(((earned / possible) * 100).toFixed(1));
       },
     },
   },

@@ -31,6 +31,16 @@ const controller = {
     throw new Error("Student not found");
   },
 
+  // TODO: Write this with an aggregation pipeline instead of hitting for all students
+  async getClassAvgScore() {
+    const students = await this.getStudents();
+
+    return (
+      students.reduce((avg, student) => avg + student.avgPct, 0) /
+      students.length
+    );
+  },
+
   // `student` is expected to validate against the Student schema
   createStudent(student) {
     return Student.create(student);
@@ -105,8 +115,7 @@ const controller = {
   },
 };
 
-const avg = await controller.getAvgScoreByStudentId("63d83aebf9c58fcc210366da");
+const classAvg = await controller.getClassAvgScore();
 
-console.log(avg);
-
+console.log(classAvg);
 export default controller;
