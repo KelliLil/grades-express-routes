@@ -21,6 +21,16 @@ const controller = {
     return Student.findById(id);
   },
 
+  async getAvgScoreByStudentId(id) {
+    const student = await this.getStudentById(id);
+
+    if (student) {
+      return student.avgPct;
+    }
+
+    throw new Error("Student not found");
+  },
+
   // `student` is expected to validate against the Student schema
   createStudent(student) {
     return Student.create(student);
@@ -95,14 +105,8 @@ const controller = {
   },
 };
 
-const avgGrade = await controller
-  .getAvgScoreByStudentId("63d83ad635828620f631a7f")
-  .catch((err) => {
-    if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
-      console.log("Invalid id");
-    }
-  });
+const avg = await controller.getAvgScoreByStudentId("63d83aebf9c58fcc210366da");
 
-console.log(avgGrade);
+console.log(avg);
 
 export default controller;

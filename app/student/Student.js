@@ -20,6 +20,33 @@ const studentSchema = new Schema(
 
     // Specify an array of subdocuments. Each subdocument will be a gradeSchema.
     grades: [gradeSchema],
+    avgPct: {
+      type: Number,
+      get() {
+        // Calculate the total earned over the total possible
+        const accumulatedScores = this.grades.reduce(
+          (
+            totals,
+
+            // Destructure the grade object to get the earned and possible properties
+            { earned, possible }
+          ) => {
+            // Avoid mutation of parameter 'totals'
+            const [totalEarned, totalPossible] = totals;
+
+            return [totalEarned + earned, totalPossible + possible];
+          },
+
+          // INITIALIZE 'totals' (the ACCUMULATOR)
+          [0, 0]
+        );
+
+        // Destructure the accumulated scores
+        const [earned, possible] = accumulatedScores;
+
+        return ((earned / possible) * 100).toFixed(1);
+      },
+    },
   },
   {
     strict: "throw",
