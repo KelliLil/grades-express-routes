@@ -94,4 +94,26 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Add a grade to the student
+router.put("/grade/:id", async (req, res) => {
+  const { id } = req.params;
+  const updatedStudent = await studentController
+    .updateStudentWithGrade(id, req.body)
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
+        res.status(400).json({ message: "Invalid ID" });
+      } else if (err.message === "Student not found") {
+        res.status(404).json({ message: err.message });
+      } else if (err instanceof mongoose.Error.ValidationError) {
+        res.status(400).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+  if (updatedStudent) {
+    res.json(updatedStudent);
+  }
+});
+
 export default router;
