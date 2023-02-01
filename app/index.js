@@ -1,6 +1,6 @@
 import express from "express";
-import studentRoutes from "./student/routes.js";
 import config from "./config.js";
+import studentRoutes from "./student/routes.js";
 
 const app = express();
 
