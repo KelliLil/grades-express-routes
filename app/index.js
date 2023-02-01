@@ -12,6 +12,10 @@ app.use(express.json());
 // Any requests to /api/students will be handled by studentRoutes
 app.use("/api/students/", studentRoutes);
 
+app.use((_, res) => {
+  res.status(404).json({ message: "Not found" });
+});
+
 app.listen(config.port, () => {
   console.info(`Server running on: http://localhost:${config.port}`);
 });
