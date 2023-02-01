@@ -35,8 +35,7 @@ const controller = {
     const students = await this.getStudents();
 
     return (
-      students.reduce((avg, student) => avg + student.avgPct, 0) /
-      students.length
+      students.reduce((avg, { avgPct }) => avg + avgPct, 0) / students.length
     );
   },
 
