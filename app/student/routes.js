@@ -35,4 +35,38 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/avg/:id", async (req, res) => {
+  const avgScore = await studentController
+    .getAvgScoreByStudentId(req.params.id)
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
+        res.status(400).json({ message: "Invalid ID" });
+      } else if (err.message === "Student not found") {
+        res.status(404).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+  if (avgScore) {
+    res.json({ avgScore });
+  }
+});
+
+router.post("/", async (req, res) => {
+  const newStudent = await studentController
+    .createStudent(req.body)
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(400).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+  if (newStudent) {
+    res.status(201).json(newStudent);
+  }
+});
+
 export default router;
