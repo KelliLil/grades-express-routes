@@ -1,5 +1,6 @@
 import express from "express";
 import studentRoutes from "./student/routes.js";
+import config from "./config.js";
 
 const app = express();
 
@@ -11,6 +12,6 @@ app.use(express.json());
 // Any requests to /api/students will be handled by studentRoutes
 app.use("/api/students/", studentRoutes);
 
-app.listen(3000, () => {
-  console.info("Server is running on port 3000");
+app.listen(config.port, () => {
+  console.info(`Server running on: http://localhost:${config.port}`);
 });
