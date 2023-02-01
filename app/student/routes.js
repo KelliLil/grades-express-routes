@@ -69,4 +69,29 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Update the student name
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  // 'value' comes from the raw MongoDB response
+  const { value } = await studentController
+    .updateStudentNameById(id, name)
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
+        res.status(400).json({ message: "Invalid ID" });
+      } else if (err instanceof mongoose.Error.ValidationError) {
+        res.status(400).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+  if (value) {
+    res.json(value);
+  } else {
+    res.status(404).json({ message: "Student not found" });
+  }
+});
+
 export default router;

@@ -44,7 +44,7 @@ const controller = {
     return Student.create(student);
   },
 
-  async createGradeForStudentById(id, grade) {
+  async updateStudentWithGrade(id, grade) {
     // Find the student by id
     // 'this' refers to the controller object
     const foundStudent = await this.getStudentById(id);
@@ -61,7 +61,20 @@ const controller = {
   },
 
   updateStudentNameById(id, name) {
-    return Student.findByIdAndUpdate(id, { name }, { rawResult: true });
+    return Student.findByIdAndUpdate(
+      id,
+      { name },
+      {
+        // Return the updated document
+        new: true,
+
+        rawResult: true,
+
+        // NS 😕 if BOTH are needed to ALWAYS VALIDATE!
+        runValidators: true,
+        strict: "throw",
+      }
+    );
   },
 
   async updateStudentScoreByGradeName(studentId, updatedGrade) {
