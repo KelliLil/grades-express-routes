@@ -60,12 +60,8 @@ const controller = {
     throw new Error("Student not found");
   },
 
-  updateStudentNameById(id, updatedName) {
-    return Student.findByIdAndUpdate(
-      id,
-      { name: updatedName.name },
-      { rawResult: true }
-    );
+  updateStudentNameById(id, name) {
+    return Student.findByIdAndUpdate(id, { name }, { rawResult: true });
   },
 
   async updateStudentScoreByGradeName(studentId, updatedGrade) {
