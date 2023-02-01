@@ -31,8 +31,7 @@ const controller = {
     throw new Error("Student not found");
   },
 
-  // TODO: Write this with an aggregation pipeline instead of hitting for all students
-  async getClassAvgScore() {
+  async getCumulativeClassAvgScore() {
     const students = await this.getStudents();
 
     return (
@@ -115,7 +114,4 @@ const controller = {
   },
 };
 
-const classAvg = await controller.getClassAvgScore();
-
-console.log(classAvg);
 export default controller;
