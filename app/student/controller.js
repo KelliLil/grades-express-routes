@@ -126,8 +126,4 @@ const controller = {
   },
 };
 
-const classAvg = await controller.getCumulativeClassAvgScore();
-
-console.log("Class average:", classAvg);
-
 export default controller;
