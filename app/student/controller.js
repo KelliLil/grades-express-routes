@@ -33,9 +33,13 @@ const controller = {
 
   async getCumulativeClassAvgScore() {
     const students = await this.getStudents();
+    const numOfStudentsWithGrades = students.filter(
+      (student) => student.grades.length
+    ).length;
 
     return (
-      students.reduce((avg, { avgPct }) => avg + avgPct, 0) / students.length
+      students.reduce((avg, { avgPct }) => avg + avgPct, 0) /
+      numOfStudentsWithGrades
     );
   },
 
@@ -101,10 +105,10 @@ const controller = {
     }
   },
 
-  updateGradeName(originalGradeName, updatedGradeName) {
+  updateGradeName(originalGradeName, newGradeName) {
     return Student.updateMany(
       { "grades.name": originalGradeName },
-      { $set: { "grades.$.name": updatedGradeName } },
+      { $set: { "grades.$.name": newGradeName } },
       { multi: true }
     );
   },
@@ -121,5 +125,9 @@ const controller = {
     return Student.findByIdAndDelete(id);
   },
 };
+
+const classAvg = await controller.getCumulativeClassAvgScore();
+
+console.log("Class average:", classAvg);
 
 export default controller;
