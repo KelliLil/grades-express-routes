@@ -184,4 +184,16 @@ router.put("/grades/curve", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  studentController.deleteStudentById(id).then((result) => {
+    if (result.deletedCount) {
+      res.json(result);
+    } else {
+      res.status(404).json({ message: "Student not found" });
+    }
+  });
+});
+
 export default router;
