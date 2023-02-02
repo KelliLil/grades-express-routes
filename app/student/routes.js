@@ -177,8 +177,6 @@ router.put("/grades/curve", async (req, res) => {
     curveAmt
   );
 
-  console.log(updatedResult);
-
   if (updatedResult.modifiedCount) {
     res.json(updatedResult);
   } else {
