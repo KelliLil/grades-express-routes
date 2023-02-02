@@ -127,4 +127,19 @@ router.put("/grade/:id", async (req, res) => {
   }
 });
 
+router.put("/grades/name", async (req, res) => {
+  const { originalName, newName } = req.body;
+
+  const updatedResult = await studentController.updateGradeName(
+    originalName,
+    newName
+  );
+
+  if (updatedResult) {
+    res.json(updatedResult);
+  } else {
+    res.status(404).json({ message: "Grade not found" });
+  }
+});
+
 export default router;
