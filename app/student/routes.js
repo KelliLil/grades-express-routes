@@ -148,7 +148,15 @@ router.put("/grades/name", async (req, res) => {
   }
 });
 
+router.put("/grades/curve", async (req, res) => {
+  const { gradeName, curveAmt } = req.body;
+
+  const updatedResult = await studentController.updateGradeWithCurve(
+    gradeName,
+    curveAmt
   );
+
+  console.log(updatedResult);
 
   if (updatedResult.modifiedCount) {
     res.json(updatedResult);
