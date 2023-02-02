@@ -53,7 +53,7 @@ router.get("/avg/:id", async (req, res) => {
   }
 });
 
-router.get("/avg", async (_, res) => {
+router.get("/grades/avg", async (_, res) => {
   studentController
     .getCumulativeClassAvgScore()
     .then((avgScore) => {
