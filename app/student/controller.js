@@ -106,11 +106,16 @@ const controller = {
   },
 
   updateGradeName(originalGradeName, newGradeName) {
-    return Student.updateMany(
-      { "grades.name": originalGradeName },
-      { $set: { "grades.$.name": newGradeName } },
-      { multi: true }
-    );
+    if (originalGradeName && newGradeName) {
+      return Student.updateMany(
+        { "grades.name": originalGradeName },
+        { $set: { "grades.$.name": newGradeName } },
+        { multi: true }
+      );
+    }
+
+    // * Must return a Promise as this is not marked as async
+    return Promise.reject(new Error("Invalid grade name(s)"));
   },
 
   updateGradeWithCurve(originalGradeName, curve) {

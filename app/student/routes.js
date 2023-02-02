@@ -130,9 +130,24 @@ router.put("/grade/:id", async (req, res) => {
 router.put("/grades/name", async (req, res) => {
   const { originalName, newName } = req.body;
 
-  const updatedResult = await studentController.updateGradeName(
-    originalName,
-    newName
+  const updatedResult = await studentController
+    .updateGradeName(originalName, newName)
+    .catch((err) => {
+      console.error("ERROR MESSAGE", err);
+      if (err.message === "Invalid grade name(s)") {
+        res.status(400).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+  if (updatedResult.modifiedCount) {
+    res.json(updatedResult);
+  } else {
+    res.status(404).json({ message: "Grade not found" });
+  }
+});
+
   );
 
   if (updatedResult.modifiedCount) {
