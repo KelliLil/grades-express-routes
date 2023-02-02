@@ -135,7 +135,7 @@ router.put("/grades/name", async (req, res) => {
     newName
   );
 
-  if (updatedResult) {
+  if (updatedResult.modifiedCount) {
     res.json(updatedResult);
   } else {
     res.status(404).json({ message: "Grade not found" });
