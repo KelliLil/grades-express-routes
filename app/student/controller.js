@@ -40,7 +40,7 @@ const controller = {
     return (
       students.reduce((avg, { avgPct }) => avg + avgPct, 0) /
       numOfStudentsWithGrades
-    );
+    ).toFixed(1);
   },
 
   // `student` is expected to validate against the Student schema
