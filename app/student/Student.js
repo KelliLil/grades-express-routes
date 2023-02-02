@@ -44,8 +44,12 @@ const studentSchema = new Schema(
         // Destructure the accumulated scores
         const [earned, possible] = accumulatedScores;
 
-        // Get the percentage, rounded to one decimal place and turn it BACK INTO A NUMBER
-        return Number.parseFloat(((earned / possible) * 100).toFixed(1));
+        if (possible)
+          // Get the percentage, rounded to one decimal place and turn it BACK INTO A NUMBER
+          return Number.parseFloat(((earned / possible) * 100).toFixed(1));
+
+        // If there are no grades, return 0
+        return 0;
       },
     },
   },
