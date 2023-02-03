@@ -4,7 +4,7 @@ import Student from "./Student.js";
 
 mongoose.set("strictQuery", true);
 mongoose
-  .connect(config.getDbConn("students"))
+  .connect(config.dbConn)
   .then(() => {
     console.info("Connected to the database");
   })
