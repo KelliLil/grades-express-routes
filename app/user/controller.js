@@ -18,9 +18,14 @@ const userController = {
   create(username, password) {
     return User.create({ username, password });
   },
-};
 
-const newUser = await userController.create("john", "123456");
-console.log(newUser);
+  async login(username, password) {
+    const loggedInUser = await User.login(username, password);
+
+    return loggedInUser;
+  },
+};
+const loggedInUser = await userController.login("john", "123456");
+console.log(loggedInUser);
 
 export default userController;

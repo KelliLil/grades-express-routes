@@ -36,4 +36,17 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
+UserSchema.statics.login = async function (username, password) {
+  // * Find the user by username
+  const user = await this.findOne({ username });
+
+  let isMatch = false;
+  // * If there is a user, compare the password
+  if (user) {
+    isMatch = await bcrypt.compare(password, user.password);
+  }
+
+  return isMatch ? user : null;
+};
+
 export default model("User", UserSchema);
