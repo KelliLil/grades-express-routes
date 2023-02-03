@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { model, Schema } from "mongoose";
 import config from "../config.js";
 
@@ -36,7 +37,7 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.statics.login = async function (username, password) {
   // * Find the user by username (case insensitive)
-  const user = await this.findOne({ username: username.toLowerCase() });
+  const user = await this.findOne({ username });
 
   let isMatch = false;
   // * If there is a user, compare the password
@@ -44,7 +45,16 @@ UserSchema.statics.login = async function (username, password) {
     isMatch = await bcrypt.compare(password, user.password);
   }
 
-  return isMatch ? user : null;
+  return isMatch
+    ? jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+        },
+        config.jwtSecret,
+        { expiresIn: config.jwtExpiresIn }
+      )
+    : null;
 };
 
 export default model("User", UserSchema);
