@@ -37,8 +37,8 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.statics.login = async function (username, password) {
-  // * Find the user by username
-  const user = await this.findOne({ username });
+  // * Find the user by username (case insensitive)
+  const user = await this.findOne({ username: username.toLowerCase() });
 
   let isMatch = false;
   // * If there is a user, compare the password
